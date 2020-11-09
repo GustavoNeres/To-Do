@@ -3,29 +3,41 @@ const taskModel = require('../model/taskModel')
 const { isPast } = require('date-fns')
 const taskValidation = async (req, res, next) => {
 
-    const {macaddress, type, title, description, when} = req.body
-    if(!macaddress){
+    const { macaddress, type, title, description, when } = req.body
+    if (!macaddress) {
         return res.status(400).json('macaddress é obrigatório')
-    }else if(!type){
+    } else if (!type) {
         return res.status(400).json('tipo é obrigatório')
-    }else if(!title){
+    } else if (!title) {
         return res.status(400).json('título é obrigatório')
-    }else if(!description){
+    } else if (!description) {
         return res.status(400).json('Descrição é obrigatória')
-    }else if(!when){
+    } else if (!when) {
         return res.status(400).json('Data e Hora são obrigatório')
-    }else if(isPast(new Date(when))){
+    } else if (isPast(new Date(when))) {
         return res.status(400).json('Escolha uma data e hora futura')
-    }else{
+    } else {
         let exists;
 
-        exists = await taskModel.findOne(
-            {
-                'when': {'$eq': new Date(when)},
-                'macaddress': {'$in': macaddress}
-            }
-        )
-        if(exists){
+        if (req.params.id) {
+            exists = await taskModel.findOne(
+                {
+                    '_id': { $ne: req.params.id },
+                    'when': { $eq: new Date(when) },
+                    'macaddress': { $in: macaddress }
+                }
+            )
+        } else {
+
+
+            exists = await taskModel.findOne(
+                {
+                    'when': { $eq: new Date(when) },
+                    'macaddress': { $in: macaddress }
+                }
+            )
+        }
+        if (exists) {
             return res.status(400).json('Já existe uma tarefa para este horário')
         }
         next()
