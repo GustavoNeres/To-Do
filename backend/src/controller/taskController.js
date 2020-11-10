@@ -1,3 +1,4 @@
+const { response } = require('express');
 const { update } = require('../model/taskModel');
 const taskModel = require('../model/taskModel');
 const { report } = require('../routes/taskRoutes');
@@ -27,6 +28,18 @@ class TaskContoller {
      .catch(err => {
          return res.status(500).json(err)
      })
+    }
+
+    async allTaskUser(req, res){
+        await taskModel.find(
+            {macaddress: {$in: req.body.macaddress}}
+        ).sort('when')
+        .then( response =>{
+            return res.status(200).json(response)
+        })
+        .catch(err =>{
+            res.status(500).json(err)
+        })
     }
 }
 
