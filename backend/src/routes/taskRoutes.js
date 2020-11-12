@@ -12,5 +12,7 @@ router.get('/filter/all', macaddressValidation, taskController.allTaskUser)
 router.get('/:id', taskController.showOneTask)
 router.delete('/:id', taskController.removeTaks)
 router.put('/:id/:done', taskController.doneTask)
+router.get('/filter/late', macaddressValidation, taskController.lateTask)
+router.get('/filter/today', macaddressValidation, taskController.today)
 
 module.exports = router;
