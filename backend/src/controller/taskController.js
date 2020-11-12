@@ -41,6 +41,43 @@ class TaskContoller {
             res.status(500).json(err)
         })
     }
+
+    async showOneTask(req, res){
+        await taskModel.findById(req.params.id)
+        .then(response => {
+            if(response)
+            return res.status(200).json(response)
+            else
+            return res.status(404).json({error: "Id não localizado!"})
+        }) 
+        .catch(err =>{
+            return res.status(500).json(err)
+        })
+    }
+
+    async removeTaks(req, res){
+        await taskModel.deleteOne({'_id': req.params.id})
+        .then(response =>{
+            return res.status(200).json(response)
+        })
+        .catch(err => {
+            return res.status(500).json(err)
+        })
+    }
+
+    async doneTask(req, res){
+        await taskModel.findByIdAndUpdate(
+            {'_id': req.params.id},
+            {'done': req.params.done},
+            {new: true}
+            )
+            .then(response =>{
+                return res.status(200).json(response)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
 }
 
 
