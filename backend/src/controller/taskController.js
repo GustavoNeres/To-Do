@@ -2,7 +2,7 @@ const { response } = require('express');
 const { update } = require('../model/taskModel');
 const taskModel = require('../model/taskModel');
 const { report } = require('../routes/taskRoutes');
-const { 
+const {
     startOfDay,
     endOfDay,
     startOfWeek,
@@ -10,7 +10,7 @@ const {
     startOfMonth,
     endOfMonth,
     startOfYear,
-    endOfYear 
+    endOfYear
 } = require('date-fns')
 
 const current = new Date()
@@ -133,6 +133,7 @@ class TaskContoller {
                 return res.status(500).json(err)
             })
     }
+
     async month(req, res) {
         await taskModel.find({
             'macaddress': { $in: req.params.macaddress },
@@ -146,6 +147,7 @@ class TaskContoller {
                 return res.status(500).json(err)
             })
     }
+    
     async year(req, res) {
         await taskModel.find({
             'macaddress': { $in: req.params.macaddress },
