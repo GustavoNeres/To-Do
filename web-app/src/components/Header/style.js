@@ -31,7 +31,7 @@ img{
 }
 
 a{
-    font-family: 'Yu Gothic';
+    
     font-weight: bold;
     text-decoration: none;
     color: #fff
