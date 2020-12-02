@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as S from './styles'
 //componets
+import taskService from '../../services/taskService'
+
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import FilterCard from '../../components/FilterCard'
@@ -8,25 +10,37 @@ import TaskCard from '../../components/TaskCard'
 
 
 function Home() {
-  const [filterActivr, setFilteractivr] = useState('today');
+  const [filterActive, setFilteractive] = useState('today');
+  const [tasks, setTasks] = useState([]);
+  
+  async function loadTaks(){
+    await taskService.loadTask(filterActive)
+    .then(response => {
+      setTasks(response.data)
+    })
+  }
+  
+  useEffect(() => {
+    loadTaks();
+  }, [filterActive])
   return (
     <S.Container>
       <Header />
       <S.Filters>
-        <button onClick={() => setFilteractivr('all')}>
-          <FilterCard title="TODOS" active={filterActivr === 'all'} />
+        <button onClick={() => setFilteractive('all')}>
+          <FilterCard title="TODOS" active={filterActive === 'all'} />
         </button>
-        <button onClick={() => setFilteractivr('today')}>
-          <FilterCard title="HOJE" active={filterActivr === 'today'} />
+        <button onClick={() => setFilteractive('today')}>
+          <FilterCard title="HOJE" active={filterActive === 'today'} />
         </button>
-        <button onClick={() => setFilteractivr('week')}>
-          <FilterCard title="SEMANA" active={filterActivr === 'week'} />
+        <button onClick={() => setFilteractive('week')}>
+          <FilterCard title="SEMANA" active={filterActive === 'week'} />
         </button>
-        <button onClick={() => setFilteractivr('month')}>
-          <FilterCard title="MÊS" active={filterActivr === 'month'} />
+        <button onClick={() => setFilteractive('month')}>
+          <FilterCard title="MÊS" active={filterActive === 'month'} />
         </button>
-        <button onClick={() => setFilteractivr('year')}>
-          <FilterCard title="ANO" active={filterActivr === 'year'} />
+        <button onClick={() => setFilteractive('year')}>
+          <FilterCard title="ANO" active={filterActive === 'year'} />
         </button>
       </S.Filters>
 
@@ -35,14 +49,11 @@ function Home() {
 </S.Divider>
 
       <S.Content>
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
-        <TaskCard />
+        {
+        tasks.map(t => (
+          <TaskCard title={t.title} type={t.type} when={t.when} />
+          )) 
+        }
       </S.Content>
 
       <Footer />

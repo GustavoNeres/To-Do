@@ -1,22 +1,26 @@
-import React from 'react'
-import * as S from './style'
+import React, { useMemo } from 'react';
+import * as S from './style';
+import { format } from 'date-fns';
 
-import iconDeful from '../../assets/Grupo 88.png'
+import icon from '../../utils/icons'
 
-function TaskCard() {
+
+function TaskCard({ title, type, when }) {
+  const date = useMemo(() =>  format(new Date(when), 'dd/MM/yyyy') )
+  const hours = useMemo(() =>  format(new Date(when), 'HH:mm') )
   return (
     <S.Container>
-        <S.TopCard>
-        <img src={iconDeful} alt="" />
-        <h3>Titulo da tarefa </h3>
+      <S.TopCard>
+        <img src={icon[type]} alt="" />
+        <h3>{title} </h3>
 
-        </S.TopCard>
-        <S.botCard>
-            <strong>10/12/2020</strong>
-            <span>10:00</span>
-        </S.botCard>
+      </S.TopCard>
+      <S.botCard>
+        <strong>{date}</strong>
+        <span>{hours}</span>
+      </S.botCard>
 
-  </S.Container>
+    </S.Container>
   );
 }
 
