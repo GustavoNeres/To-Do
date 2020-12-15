@@ -14,8 +14,6 @@ const taskValidation = async (req, res, next) => {
         return res.status(400).json('Descrição é obrigatória')
     } else if (!when) {
         return res.status(400).json('Data e Hora são obrigatório')
-    } else if (isPast(new Date(when))) {
-        return res.status(400).json('Escolha uma data e hora futura')
     } else {
         let exists;
 
@@ -29,7 +27,10 @@ const taskValidation = async (req, res, next) => {
             )
         } else {
 
-
+            if (isPast(new Date(when))) {
+                return res.status(400).json('Escolha uma data e hora futura')
+            } 
+            
             exists = await taskModel.findOne(
                 {
                     'when': { $eq: new Date(when) },
