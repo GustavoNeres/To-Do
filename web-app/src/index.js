@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './views/Home';
+
+import Route from './routes'
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <Home />
+    <Route />
   </React.StrictMode>,
   document.getElementById('root')
 );

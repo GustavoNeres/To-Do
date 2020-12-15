@@ -20,7 +20,10 @@ export const Content = styled.div`
  display: flex;
  flex-wrap: wrap;
  justify-content: center;
- margin-top: 25px
+ margin-top: 25px;
+ margin-bottom: 50px;
+
+
 `
 export const Divider = styled.div`
 width: 100%;

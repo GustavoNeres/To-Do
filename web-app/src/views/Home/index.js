@@ -7,25 +7,37 @@ import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import FilterCard from '../../components/FilterCard'
 import TaskCard from '../../components/TaskCard'
+import { Redirect } from 'react-router-dom'
+import isConnected from '../../utils/isConnected'
 
 
 function Home() {
   const [filterActive, setFilteractive] = useState('today');
   const [tasks, setTasks] = useState([]);
-  
-  async function loadTaks(){
+  const [redirect, setRedirect] = useState(false);
+ 
+
+  async function loadTaks() {
     await taskService.loadTask(filterActive)
-    .then(response => {
-      setTasks(response.data)
-    })
+      .then(response => {
+        setTasks(response.data)
+      })
   }
-  
+ 
+  function clickTaskLate() {
+    setFilteractive('late')
+  }
+
   useEffect(() => {
+    if(!isConnected){
+      setRedirect(true)
+    }
     loadTaks();
   }, [filterActive])
   return (
     <S.Container>
-      <Header />
+      {redirect && <Redirect to={'/QrCode'}/>}
+      <Header  clickTaskLate={clickTaskLate} />
       <S.Filters>
         <button onClick={() => setFilteractive('all')}>
           <FilterCard title="TODOS" active={filterActive === 'all'} />
@@ -44,15 +56,17 @@ function Home() {
         </button>
       </S.Filters>
 
-<S.Divider>
-  <h3>TAREFAS</h3>
-</S.Divider>
+      <S.Divider>
+        <h3>{filterActive === 'late' ? 'TAREFAS ATRASADAS' : 'TAREFAS'}</h3>
+      </S.Divider>
 
       <S.Content>
         {
-        tasks.map(t => (
-          <TaskCard title={t.title} type={t.type} when={t.when} />
-          )) 
+          tasks.map(t => (
+
+            <TaskCard title={t.title} type={t.type} when={t.when} id={t._id} />
+
+          ))
         }
       </S.Content>
 

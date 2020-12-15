@@ -29,9 +29,14 @@ img{
    width: 35%;
    height: auto;
 }
+button{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
 
-a{
-    
+a, button{
+    font-size: 14px;
     font-weight: bold;
     text-decoration: none;
     color: #fff

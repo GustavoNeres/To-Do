@@ -18,6 +18,12 @@ transition: all 0.2s ease;
 &:hover{
     opacity: 0.9;
 }
+
+a{
+    width: 100%;
+    text-decoration: none;
+    color: #fff
+}
 `
 export const TopCard = styled.div`
 display: flex;
